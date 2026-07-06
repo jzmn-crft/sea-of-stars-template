@@ -187,14 +187,14 @@ function initScrollAnimations(){
     });
   });
 
-  /* Work panels */
-  gsap.from('.work-panel', {
+  /* Work cards */
+  gsap.from('.work-card', {
     opacity: 0, y: 50, duration: 1, ease: 'power3.out', stagger: .15,
-    scrollTrigger: { trigger: '.work-split', start: 'top 78%' }
+    scrollTrigger: { trigger: '.work-grid', start: 'top 78%' }
   });
 
-  /* Work panel mouse glow */
-  document.querySelectorAll('.work-panel').forEach(p => {
+  /* Work card mouse glow */
+  document.querySelectorAll('.work-card').forEach(p => {
     p.addEventListener('mousemove', e => {
       const r = p.getBoundingClientRect();
       p.style.setProperty('--mx', (e.clientX - r.left) + 'px');
@@ -312,6 +312,56 @@ function initScrollAnimations(){
           onComplete(){ if (item.classList.contains('open')) panel.style.height = 'auto'; } });
       }
     });
+  });
+})();
+
+/* ─────────────────────────────────────────
+   6c. WORK CASE-STUDY OVERLAY
+───────────────────────────────────────── */
+(function(){
+  const modal  = document.getElementById('wmodal');
+  const back   = document.getElementById('wmodal-back');
+  const closeB = document.getElementById('wm-close');
+  const body   = document.getElementById('wmodal-body');
+  if (!modal) return;
+  let lastTrigger = null;
+
+  function open(trigger){
+    const tplId = trigger.getAttribute('data-target');
+    const tpl = document.getElementById(tplId);
+    if (!tpl) return;
+    body.innerHTML = '';
+    body.appendChild(tpl.content.cloneNode(true));
+    const title = body.querySelector('.wm-title');
+    if (title) title.id = 'wm-title-live';
+    lastTrigger = trigger;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+    closeB.focus();
+  }
+  function close(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+    lastTrigger?.focus();
+  }
+
+  document.querySelectorAll('.work-card').forEach(card => {
+    card.addEventListener('click', () => open(card));
+  });
+  closeB?.addEventListener('click', close);
+  back?.addEventListener('click', close);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) close();
+  });
+
+  modal.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const f = modal.querySelectorAll('button,[href],[tabindex]:not([tabindex="-1"])');
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey){ if (document.activeElement === first){ e.preventDefault(); last.focus(); } }
+    else { if (document.activeElement === last){ e.preventDefault(); first.focus(); } }
   });
 })();
 

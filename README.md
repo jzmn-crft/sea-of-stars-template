@@ -57,7 +57,10 @@ fight you.
 ```
 index.html   — all markup + CSS (inline <style>, custom properties in :root)
 main.js      — all page JS (loader, nav, scroll animations, starfield,
-               film grain, testimonials pin, accordion, cookie consent + GA4)
+               film grain, testimonials pin, accordion, work case-study
+               overlays, cookie consent + GA4)
+images/      — placeholder project covers + testimonial avatars, replace
+               with your own (self-hosted so the CSP in _headers still works)
 _headers     — Cloudflare Pages security headers (CSP, HSTS, etc.)
 _redirects   — Cloudflare Pages redirects + shortlinks
 robots.txt, sitemap.xml, site.webmanifest
@@ -76,10 +79,14 @@ Search `index.html` for these and swap in your own content:
   `https://medium.com/@yourhandle`, `https://example.com/mentoring` —
   also mirrored in `_redirects` (the `/linkedin`, `/mentor`, `/medium`,
   `/twitter`, `/x` shortlinks).
-- **Content sections**: Work (markets/industries tags), Experience
-  (timeline entries), Skills (proficiency bars — names and percentages
-  are both illustrative), Education (degrees/certs), Testimonials (all
-  three quotes are lorem ipsum with fictional attributions).
+- **Content sections**: Work (4 project cards that open case-study
+  overlays — replace the cover images in `images/`, the card copy, and
+  the matching `<template id="wm-1">`–`<template id="wm-4">` blocks with
+  your own project write-ups), Experience (timeline entries), Skills
+  (proficiency bars — names and percentages are both illustrative),
+  Education (degrees/certs), Testimonials (all three quotes are lorem
+  ipsum with fictional attributions — swap `images/avatar-*.jpg` for
+  real photos or initials of your own).
 - **Assets**: `favicon.svg`/`favicon.png`/`apple-touch-icon.png` currently
   render a generic "Y" mark in the site's teal-on-black style —
   regenerate them with your own initial/logo (e.g. via
