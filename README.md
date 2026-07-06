@@ -2,7 +2,7 @@
 
 A free portfolio/CV site template. Scroll-driven, motion-first, no framework.
 
-**[live preview →](https://yourusername.github.io/sea-of-stars/)**
+**[live preview →](https://jzmn-crft.github.io/sea-of-stars-template/)**
 
 ## What you get
 
@@ -134,12 +134,19 @@ After deploying, verify with:
 
 `_headers` and `_redirects` are Cloudflare Pages conventions — they're
 inert on GitHub Pages (and Vercel/Netlify) and safe to leave in the repo
-or delete. Everything in `index.html`/`main.js` works as-is on GitHub
-Pages with no changes needed; you just lose the CSP/HSTS hardening and
-the shortlink redirects those two files provide. If you want equivalent
-security headers on GitHub Pages, you'd need to front it with a CDN
-(e.g. Cloudflare in front of your `github.io` domain) since GitHub
-Pages itself doesn't support custom response headers.
+or delete. You just lose the CSP/HSTS hardening and the shortlink
+redirects those two files provide. If you want equivalent security
+headers on GitHub Pages, you'd need to front it with a CDN (e.g.
+Cloudflare in front of your `github.io` domain) since GitHub Pages
+itself doesn't support custom response headers.
+
+All internal asset paths (`main.js`, `favicon.svg`, `resume.pdf`, etc.)
+are relative, not root-absolute (`main.js`, not `/main.js`) — this is
+required for GitHub Pages project sites, which serve from
+`https://username.github.io/repo-name/` rather than domain root. If you
+fork this and reintroduce a leading `/` on any asset path, it'll 404 on
+GitHub Pages (root-absolute paths only work when the site is served
+from an actual domain root, e.g. a custom domain or Cloudflare Pages).
 
 ## Performance notes
 
