@@ -169,7 +169,7 @@ pass before shipping if you extend them.
 
 ## License
 
-MIT — free for personal and commercial use. See [LICENSE](LICENSE).
+MIT — free for personal and commercial use provided the copyright and permission notice shall be included in all copies or substantial portions of the Software. See [LICENSE](LICENSE).
 
 ---
 
