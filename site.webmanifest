@@ -1,0 +1,13 @@
+{
+  "name": "Your Name",
+  "short_name": "Your Name",
+  "description": "Your Job Title",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0A0C",
+  "theme_color": "#2DD4BF",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/favicon.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

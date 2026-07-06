@@ -1,0 +1,12 @@
+# Cloudflare Pages — URL redirects
+# Format: source  destination  [status]
+
+# Redirect www → apex (301 permanent)
+https://www.example.com/*  https://example.com/:splat  301
+
+# Convenience shortlinks (use in email signatures, bios, etc.)
+/linkedin   https://linkedin.com/in/yourprofile   302
+/mentor     https://example.com/mentoring         302
+/medium     https://medium.com/@yourhandle        302
+/twitter    https://x.com/yourhandle              302
+/x          https://x.com/yourhandle              302

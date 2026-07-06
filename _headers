@@ -1,0 +1,105 @@
+# ═══════════════════════════════════════════════════════════════════
+# example.com — Cloudflare Pages _headers
+# Target: A+ on securityheaders.com + Mozilla Observatory
+# Last updated to fix: style-src-elem, Cloudflare Insights, COEP/Fonts conflict
+# ═══════════════════════════════════════════════════════════════════
+
+/*
+  # ── 1. HSTS ────────────────────────────────────────────────────────
+  # Forces HTTPS for 2 years (OWASP recommended minimum: 63072000s).
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+
+  # ── 2. CONTENT SECURITY POLICY ─────────────────────────────────────
+  #
+  # KEY DECISIONS EXPLAINED:
+  #
+  # script-src: 'self' covers /main.js. No 'unsafe-inline' — all scripts are external,
+  #   and the CDN <script> tags in index.html carry SRI (integrity=) hashes.
+  #   cdn.jsdelivr.net: Three.js, GSAP, ScrollTrigger, Lenis (pinned versions).
+  #   *.cloudflareinsights.com: Cloudflare Web Analytics beacon (beacon.min.js).
+  #   googletagmanager.com + google-analytics.com: GA4 loaded dynamically by main.js.
+  #
+  # style-src + style-src-elem: BOTH required.
+  #   style-src-elem covers <link rel="stylesheet"> elements (Google Fonts <link> tag).
+  #   style-src covers inline styles set via JS (element.style.setProperty for spotlight).
+  #   'unsafe-inline' on style-src is REQUIRED for JS-set inline styles and does NOT
+  #   hurt securityheaders.com A+ grade — only script-src 'unsafe-inline' is penalised.
+  #
+  # font-src: fonts.gstatic.com serves the actual .woff2 font files.
+  #
+  # connect-src: GA4 + Cloudflare analytics beacon reporting endpoint.
+  #   cloudflareinsights.com: where the CF analytics beacon sends data.
+  #
+  # Cross-Origin-Embedder-Policy is set to unsafe-none (NOT require-corp).
+  #   require-corp breaks Google Fonts because fonts.gstatic.com does not
+  #   send a Cross-Origin-Resource-Policy header on its font responses.
+  #   unsafe-none preserves the COOP isolation benefit while allowing fonts to load.
+  #
+  Content-Security-Policy: default-src 'none'; script-src 'self' https://cdn.jsdelivr.net https://www.googletagmanager.com https://www.google-analytics.com https://*.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-elem 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
+
+  # ── 3. X-FRAME-OPTIONS ─────────────────────────────────────────────
+  X-Frame-Options: DENY
+
+  # ── 4. X-CONTENT-TYPE-OPTIONS ──────────────────────────────────────
+  X-Content-Type-Options: nosniff
+
+  # ── 5. REFERRER POLICY ─────────────────────────────────────────────
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # ── 6. PERMISSIONS POLICY ──────────────────────────────────────────
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=(), browsing-topics=(), display-capture=(), fullscreen=(self), accelerometer=(), gyroscope=(), magnetometer=()
+
+  # ── 7. CROSS-ORIGIN POLICIES ───────────────────────────────────────
+  # COOP same-origin: isolates this page's browsing context (Spectre protection).
+  # COEP unsafe-none: intentionally NOT require-corp — Google Fonts (gstatic.com)
+  #   does not set CORP headers, so require-corp silently blocks font loading.
+  #   unsafe-none still benefits from COOP isolation without breaking fonts.
+  # CORP same-origin: prevents other sites hotlinking your assets.
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: unsafe-none
+  Cross-Origin-Resource-Policy: same-origin
+
+  # ── 8. CACHE CONTROL FOR HTML ──────────────────────────────────────
+  Cache-Control: no-cache, must-revalidate
+
+# ── Static assets ──────────────────────────────────────────────────
+/*.js
+  Cache-Control: public, max-age=31536000, immutable
+  Cross-Origin-Resource-Policy: same-origin
+
+/*.css
+  Cache-Control: public, max-age=31536000, immutable
+  Cross-Origin-Resource-Policy: same-origin
+
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+  Cross-Origin-Resource-Policy: same-origin
+
+/*.png
+  Cache-Control: public, max-age=2592000
+  Cross-Origin-Resource-Policy: same-origin
+
+/*.svg
+  Cache-Control: public, max-age=2592000
+  Cross-Origin-Resource-Policy: same-origin
+
+/*.webmanifest
+  Cache-Control: public, max-age=86400
+
+/*.pdf
+  Cache-Control: public, max-age=86400
+  Cross-Origin-Resource-Policy: same-origin
+
+# ═══════════════════════════════════════════════════════════════════
+# VERIFY AFTER DEPLOY:
+#   https://securityheaders.com/?q=https://example.com  → expect A+
+#   https://observatory.mozilla.org/analyze/example.com → expect A or A+
+#
+# IF FONTS STILL BREAK after deploy:
+#   Change style-src-elem line to also include 'unsafe-inline':
+#   style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com
+#
+# IF CLOUDFLARE ANALYTICS still blocked:
+#   Check Cloudflare dashboard → Analytics → the beacon URL shown there,
+#   and add it explicitly alongside *.cloudflareinsights.com.
+# ═══════════════════════════════════════════════════════════════════
