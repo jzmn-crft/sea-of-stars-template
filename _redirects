@@ -2,11 +2,11 @@
 # Format: source  destination  [status]
 
 # Redirect www → apex (301 permanent)
-https://www.example.com/*  https://example.com/:splat  301
+https://www.mayakessler.com/*  https://mayakessler.com/:splat  301
 
 # Convenience shortlinks (use in email signatures, bios, etc.)
-/linkedin   https://linkedin.com/in/yourprofile   302
-/mentor     https://example.com/mentoring         302
-/medium     https://medium.com/@yourhandle        302
-/twitter    https://x.com/yourhandle              302
-/x          https://x.com/yourhandle              302
+/linkedin   https://linkedin.com/in/maya-kessler-pm                        302
+/mentor     mailto:hello@mayakessler.com?subject=Mentoring%20inquiry       302
+/medium     https://medium.com/@mayakesslerpm                             302
+/twitter    https://x.com/mayakesslerpm                                   302
+/x          https://x.com/mayakesslerpm                                   302

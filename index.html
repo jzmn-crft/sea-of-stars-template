@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Your Name — Your Title</title>
-<meta name="description" content="A one-line summary of what you do and who you help. Replace with your own positioning statement."/>
-<meta name="author" content="Your Name"/>
+<title>Maya Kessler — Senior Product Manager</title>
+<meta name="description" content="Senior Product Manager based in Lisbon, turning ambiguous problems into shipped products used by thousands."/>
+<meta name="author" content="Maya Kessler"/>
 <meta name="robots" content="index, follow"/>
-<link rel="canonical" href="https://example.com/"/>
+<link rel="canonical" href="https://mayakessler.com/"/>
 <meta property="og:type" content="website"/>
-<meta property="og:url" content="https://example.com/"/>
-<meta property="og:title" content="Your Name — Your Title"/>
-<meta property="og:description" content="A one-line summary of what you do and who you help. Replace with your own positioning statement."/>
-<meta property="og:image" content="https://example.com/og-image.png"/>
+<meta property="og:url" content="https://mayakessler.com/"/>
+<meta property="og:title" content="Maya Kessler — Senior Product Manager"/>
+<meta property="og:description" content="Senior Product Manager based in Lisbon, turning ambiguous problems into shipped products used by thousands."/>
+<meta property="og:image" content="https://mayakessler.com/og-image.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:site" content="@yourhandle"/>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Your Name","jobTitle":"Your Job Title","url":"https://example.com","sameAs":["https://linkedin.com/in/yourprofile","https://x.com/yourhandle","https://medium.com/@yourhandle"]}</script>
+<meta name="twitter:site" content="@mayakesslerpm"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Maya Kessler","jobTitle":"Senior Product Manager","url":"https://mayakessler.com","sameAs":["https://linkedin.com/in/maya-kessler-pm","https://x.com/mayakesslerpm","https://medium.com/@mayakesslerpm"]}</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -354,35 +354,48 @@ nav.scrolled::after { opacity: 1; }
 .sec-h .roman { font-style: normal; font-weight: 100; color: var(--mid); }
 
 /* ════════════════════════════════════════
-   WORK — split layout
+   WORK — project grid + overlay
 ════════════════════════════════════════ */
-.work-split {
+.work-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   border: 1px solid var(--rim);
   gap: 0;
 }
-@media(max-width:680px){ .work-split { grid-template-columns: 1fr; } }
+@media(max-width:680px){ .work-grid { grid-template-columns: 1fr; } }
 
-.work-panel {
+.work-card {
   padding: 3.5rem;
   position: relative; overflow: hidden;
   background: var(--bg2);
   border-right: 1px solid var(--rim);
+  border-bottom: 1px solid var(--rim);
+  border-top: none; border-left: none;
   transition: background .4s;
+  text-align: left; width: 100%;
+  font-family: inherit; color: inherit;
+  cursor: pointer;
 }
-.work-panel:last-child { border-right: none; }
-.work-panel::before {
+.work-card:nth-child(2n) { border-right: none; }
+.work-card:nth-last-child(-n+2) { border-bottom: none; }
+@media(max-width:680px){ .work-card { border-right: none !important; } .work-card:last-child { border-bottom: none; } }
+.work-card::before {
   content: '';
   position: absolute; inset: 0;
   background: radial-gradient(500px circle at var(--mx,50%) var(--my,50%), rgba(45,212,191,0.055) 0%, transparent 60%);
   opacity: 0; transition: opacity .5s; pointer-events: none;
 }
-.work-panel:hover::before { opacity: 1; }
+.work-card:hover::before, .work-card:focus-visible::before { opacity: 1; }
+.work-card:focus-visible { outline: 1px solid rgba(45,212,191,.5); outline-offset: -1px; }
 
 .wp-num { font-family: var(--serif); font-size: 5rem; font-weight: 100; font-style: italic; color: var(--dim); line-height: 1; letter-spacing: -.05em; margin-bottom: 1.5rem; display: block; }
 .wp-kicker { font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); display: block; margin-bottom: 1rem; }
 .wp-title { font-family: var(--serif); font-size: 1.5rem; font-weight: 200; font-style: italic; color: var(--prose); margin-bottom: 2rem; letter-spacing: -.02em; }
+.wp-view {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .72rem; color: var(--teal); margin-top: 1.5rem;
+}
+.wp-view svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2; }
 
 .tag-cloud { display: flex; flex-wrap: wrap; gap: .5rem; }
 .tag {
@@ -669,6 +682,38 @@ footer {
 .pm-close:hover { color: var(--prose); border-color: rgba(255,255,255,.28); }
 
 /* ════════════════════════════════════════
+   WORK CASE-STUDY OVERLAY
+════════════════════════════════════════ */
+#wmodal {
+  position: fixed; inset: 0; z-index: 8000;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+}
+#wmodal.open { pointer-events: all; }
+#wmodal-back {
+  position: absolute; inset: 0;
+  background: rgba(6,6,10,.75); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  opacity: 0; transition: opacity .35s;
+}
+#wmodal.open #wmodal-back { opacity: 1; }
+#wmodal-panel {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 640px; margin: 0 1rem; max-height: 85vh; overflow-y: auto;
+  background: #10101a; border: 1px solid var(--rim2);
+  border-radius: 10px; padding: 2.5rem;
+  transform: translateY(24px) scale(.98); opacity: 0;
+  transition: transform .4s var(--ease), opacity .3s;
+}
+#wmodal.open #wmodal-panel { transform: translateY(0) scale(1); opacity: 1; }
+#wmodal .pm-handle { display: none; }
+.wm-kicker { font-size: .65rem; letter-spacing: .15em; text-transform: uppercase; color: var(--teal); display: block; margin-bottom: 1rem; }
+.wm-title { font-family: var(--serif); font-size: 1.6rem; font-weight: 200; font-style: italic; color: var(--prose); margin-bottom: 1.5rem; letter-spacing: -.02em; }
+.wm-role { font-size: .8rem; color: var(--mid); margin-bottom: 1.25rem; }
+.wm-desc { font-size: .85rem; color: var(--prose); line-height: 1.75; margin-bottom: 1.1rem; }
+.wm-desc strong { color: var(--teal); font-weight: 500; }
+#wmodal-body .tag-cloud { margin-top: 1.5rem; }
+
+/* ════════════════════════════════════════
    COOKIE BAR
 ════════════════════════════════════════ */
 #cbar {
@@ -721,7 +766,7 @@ footer {
 <!-- ═══ LOADER ═══ -->
 <div id="loader" aria-hidden="true">
   <div id="loader-name">
-    <span>Y</span><span>o</span><span>u</span><span>r</span><span>&nbsp;</span><span>N</span><span>a</span><span>m</span><span>e</span>
+    <span>M</span><span>a</span><span>y</span><span>a</span><span>&nbsp;</span><span>K</span><span>e</span><span>s</span><span>s</span><span>l</span><span>e</span><span>r</span>
   </div>
   <div id="loader-bar"></div>
   <div id="loader-panels">
@@ -732,14 +777,14 @@ footer {
 
 <!-- ═══ NAV ═══ -->
 <nav role="navigation" aria-label="Main navigation" id="main-nav">
-  <a href="./" class="nav-logo" aria-label="Your Name — home">Your Name</a>
+  <a href="./" class="nav-logo" aria-label="Maya Kessler — home">Maya Kessler</a>
   <div class="nav-right">
     <span class="nav-index" id="nav-index" aria-hidden="true">00</span>
     <a href="resume.pdf" download class="nav-cta nav-cv">
       Résumé
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg>
     </a>
-    <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" class="nav-cta">
+    <a href="https://linkedin.com/in/maya-kessler-pm" target="_blank" rel="noopener noreferrer" class="nav-cta">
       Connect
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
     </a>
@@ -759,29 +804,29 @@ footer {
   <div class="hero-inner">
     <p class="hero-eyebrow" id="hero-eye">
       <span class="hero-eyebrow-line"></span>
-      Your Role · Your Location
+      Senior Product Manager · Lisbon, PT
     </p>
 
     <h1 class="hero-h1" id="hero-h">
-      <span class="clip-wrap"><span class="clip-inner">Lorem ipsum dolor</span></span>
-      <span class="clip-wrap"><span class="clip-inner">sit amet <span class="word-accent">consectetur</span></span></span>
+      <span class="clip-wrap"><span class="clip-inner">Shaping products</span></span>
+      <span class="clip-wrap"><span class="clip-inner">people <span class="word-accent">actually want</span></span></span>
     </h1>
 
     <p class="hero-sub">
-      <span class="clip-wrap"><span class="clip-inner">adipiscing elit sed do eiusmod tempor.</span></span>
+      <span class="clip-wrap"><span class="clip-inner">9 years turning fuzzy problems into shipped features.</span></span>
     </p>
 
     <div class="hero-stats" id="hero-stats" aria-label="Key metrics">
       <div class="stat-cell">
-        <span class="stat-val" data-count="100" data-suffix="+">100+</span>
-        <span class="stat-lbl">Projects shipped</span>
+        <span class="stat-val" data-count="40" data-suffix="+">40+</span>
+        <span class="stat-lbl">Products shipped</span>
       </div>
       <div class="stat-cell">
-        <span class="stat-val" data-prefix="$" data-count="10" data-suffix="M">$10M</span>
+        <span class="stat-val" data-prefix="$" data-count="18" data-suffix="M">$18M</span>
         <span class="stat-lbl">Revenue influenced</span>
       </div>
       <div class="stat-cell">
-        <span class="stat-val" data-count="5" data-suffix=" markets">5 markets</span>
+        <span class="stat-val" data-count="6" data-suffix=" markets">6 markets</span>
         <span class="stat-lbl">Deployed across</span>
       </div>
       <div class="stat-cell">
@@ -796,7 +841,7 @@ footer {
         View full profile
         <svg viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>
       </a>
-      <a href="mailto:hello@example.com" class="btn-ghost">
+      <a href="mailto:hello@mayakessler.com?subject=Mentoring%20inquiry" class="btn-ghost">
         Book a session
       </a>
     </div>
@@ -850,44 +895,44 @@ footer {
       <div class="tl-item">
         <span class="tl-node" aria-hidden="true"></span>
         <span class="tl-date">2023 — Present</span>
-        <p class="tl-role">Your Job Title</p>
-        <p class="tl-org">Company Name · Your Location</p>
-        <p class="tl-desc">Lorem ipsum dolor sit amet, <strong>consectetur adipiscing elit</strong>, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <p class="tl-role">Senior Product Manager</p>
+        <p class="tl-org">Solenne · Lisbon, PT</p>
+        <p class="tl-desc">Owns the core subscription product for a 40-person SaaS scale-up, leading strategy from discovery through GA. Rebuilt onboarding and cut <strong>time-to-first-value by 38%</strong>.</p>
         <div class="tl-highlights">
-          <span class="tag">Skill A</span><span class="tag">Skill B</span><span class="tag">Skill C</span>
+          <span class="tag">Product Strategy</span><span class="tag">A/B Testing</span><span class="tag">Roadmapping</span>
         </div>
       </div>
 
       <div class="tl-item">
         <span class="tl-node" aria-hidden="true"></span>
         <span class="tl-date">2021 — 2023</span>
-        <p class="tl-role">Your Previous Job Title</p>
-        <p class="tl-org">Company Name</p>
-        <p class="tl-desc">Ut enim ad minim veniam, quis nostrud exercitation ullamco <strong>laboris nisi ut aliquip</strong> ex ea commodo consequat.</p>
+        <p class="tl-role">Product Manager</p>
+        <p class="tl-org">Vantree</p>
+        <p class="tl-desc">Led a cross-functional team of 8 shipping a payments dashboard used by <strong>12,000+ merchants</strong>, prioritizing a backlog against measurable revenue impact.</p>
         <div class="tl-highlights">
-          <span class="tag">Skill D</span><span class="tag">Skill E</span><span class="tag">Skill F</span>
+          <span class="tag">Fintech</span><span class="tag">Stakeholder Management</span><span class="tag">SQL</span>
         </div>
       </div>
 
       <div class="tl-item">
         <span class="tl-node" aria-hidden="true"></span>
         <span class="tl-date">2018 — 2021</span>
-        <p class="tl-role">Earlier Job Title</p>
-        <p class="tl-org">Company Name</p>
-        <p class="tl-desc">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu <strong>fugiat nulla pariatur</strong>.</p>
+        <p class="tl-role">Associate Product Manager</p>
+        <p class="tl-org">Marlow &amp; Finch</p>
+        <p class="tl-desc">Ran discovery interviews and analytics for a healthcare scheduling tool, shipping features that <strong>reduced missed appointments by 22%</strong> across three regional markets.</p>
         <div class="tl-highlights">
-          <span class="tag">Skill G</span><span class="tag">Skill H</span>
+          <span class="tag">Discovery</span><span class="tag">Healthcare</span>
         </div>
       </div>
 
       <div class="tl-item">
         <span class="tl-node" aria-hidden="true"></span>
         <span class="tl-date">2016 — 2018</span>
-        <p class="tl-role">First Job Title</p>
-        <p class="tl-org">Company Name · Location</p>
-        <p class="tl-desc">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui <strong>officia deserunt mollit anim</strong> id est laborum.</p>
+        <p class="tl-role">Business Analyst</p>
+        <p class="tl-org">Northwind Digital · Lisbon, PT</p>
+        <p class="tl-desc">Translated stakeholder requirements into specs for an internal logistics platform, and ran QA ahead of <strong>quarterly releases</strong>.</p>
         <div class="tl-highlights">
-          <span class="tag">Skill I</span><span class="tag">Skill J</span>
+          <span class="tag">Requirements</span><span class="tag">QA</span>
         </div>
       </div>
     </div>
@@ -902,31 +947,93 @@ footer {
       <span class="sec-label">Work</span>
     </div>
     <h2 class="sec-h" id="work-h">
-      <span class="clip-wrap"><span class="clip-inner">Markets &amp; industries</span></span>
-      <span class="clip-wrap"><span class="clip-inner"><em>across the decade.</em></span></span>
+      <span class="clip-wrap"><span class="clip-inner">Four launches,</span></span>
+      <span class="clip-wrap"><span class="clip-inner"><em>closer look.</em></span></span>
     </h2>
-    <div class="work-split">
-      <div class="work-panel" id="wp-1">
+    <div class="work-grid" id="work-grid">
+
+      <button class="work-card" type="button" data-target="wm-1">
         <span class="wp-num">01</span>
-        <span class="wp-kicker">Markets</span>
-        <p class="wp-title">Lorem ipsum region</p>
-        <div class="tag-cloud">
-          <span class="tag">North America</span><span class="tag">Europe</span><span class="tag">Asia Pacific</span>
-          <span class="tag">Region A</span><span class="tag">Region B</span>
-        </div>
-      </div>
-      <div class="work-panel" id="wp-2">
+        <span class="wp-kicker">Solenne · SaaS</span>
+        <p class="wp-title">Subscription onboarding redesign</p>
+        <div class="tag-cloud"><span class="tag">Product Strategy</span><span class="tag">Onboarding</span></div>
+        <span class="wp-view">View case study <svg viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
+      </button>
+
+      <button class="work-card" type="button" data-target="wm-2">
         <span class="wp-num">02</span>
-        <span class="wp-kicker">Industries</span>
-        <p class="wp-title">Industry A to industry B</p>
-        <div class="tag-cloud">
-          <span class="tag">SaaS</span><span class="tag">Fintech</span><span class="tag">Healthcare</span>
-          <span class="tag">Retail</span><span class="tag">Education</span><span class="tag">Logistics</span>
-        </div>
-      </div>
+        <span class="wp-kicker">Vantree · Fintech</span>
+        <p class="wp-title">Merchant payments dashboard</p>
+        <div class="tag-cloud"><span class="tag">Fintech</span><span class="tag">Analytics</span></div>
+        <span class="wp-view">View case study <svg viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
+      </button>
+
+      <button class="work-card" type="button" data-target="wm-3">
+        <span class="wp-num">03</span>
+        <span class="wp-kicker">Marlow &amp; Finch · Healthcare</span>
+        <p class="wp-title">Appointment reminders system</p>
+        <div class="tag-cloud"><span class="tag">Healthcare</span><span class="tag">Discovery</span></div>
+        <span class="wp-view">View case study <svg viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
+      </button>
+
+      <button class="work-card" type="button" data-target="wm-4">
+        <span class="wp-num">04</span>
+        <span class="wp-kicker">Northwind Digital · Logistics</span>
+        <p class="wp-title">Logistics ops console</p>
+        <div class="tag-cloud"><span class="tag">Logistics</span><span class="tag">QA</span></div>
+        <span class="wp-view">View case study <svg viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></span>
+      </button>
+
     </div>
   </div>
 </section>
+
+<!-- Case study content, cloned into #wmodal on click -->
+<template id="wm-1">
+  <span class="wm-kicker">Solenne · SaaS · 2024</span>
+  <h3 class="wm-title">Subscription onboarding redesign</h3>
+  <p class="wm-role"><strong>Role:</strong> Senior Product Manager, owned discovery through GA</p>
+  <p class="wm-desc"><strong>Problem —</strong> 44% of trial signups never reached their first meaningful action in-product, and support tickets about "getting started" were the single largest category.</p>
+  <p class="wm-desc"><strong>Approach —</strong> Ran 20+ user interviews, mapped the drop-off funnel step by step, and cut the setup flow from 9 steps to 4 by deferring optional configuration until after first value.</p>
+  <div class="tag-cloud"><span class="tag">Time-to-value −38%</span><span class="tag">Trial → paid +14%</span><span class="tag">Support tickets −26%</span></div>
+</template>
+
+<template id="wm-2">
+  <span class="wm-kicker">Vantree · Fintech · 2022</span>
+  <h3 class="wm-title">Merchant payments dashboard</h3>
+  <p class="wm-role"><strong>Role:</strong> Product Manager, led a team of 8 (2 engineers, 1 designer, 1 analyst, 4 support)</p>
+  <p class="wm-desc"><strong>Problem —</strong> Merchants had no single view of settlements, disputes, and payouts — reconciliation required exporting three separate reports and manually cross-referencing them.</p>
+  <p class="wm-desc"><strong>Approach —</strong> Prioritized a unified dashboard backlog against projected support-hour savings and churn risk, shipping in three incremental releases to de-risk the migration.</p>
+  <div class="tag-cloud"><span class="tag">12,000+ merchants</span><span class="tag">Support hours −31%</span><span class="tag">NPS +9</span></div>
+</template>
+
+<template id="wm-3">
+  <span class="wm-kicker">Marlow &amp; Finch · Healthcare · 2020</span>
+  <h3 class="wm-title">Appointment reminders system</h3>
+  <p class="wm-role"><strong>Role:</strong> Associate Product Manager, ran discovery and analytics</p>
+  <p class="wm-desc"><strong>Problem —</strong> No-show rates across three regional clinics were eating into scheduling capacity, and staff had no way to see which patients were at highest risk of missing a visit.</p>
+  <p class="wm-desc"><strong>Approach —</strong> Built a lightweight risk model from historical attendance data and layered in SMS + email reminders timed against each patient's individual no-show likelihood, not a fixed schedule.</p>
+  <div class="tag-cloud"><span class="tag">Missed appts −22%</span><span class="tag">3 regional markets</span></div>
+</template>
+
+<template id="wm-4">
+  <span class="wm-kicker">Northwind Digital · Logistics · 2017</span>
+  <h3 class="wm-title">Logistics ops console</h3>
+  <p class="wm-role"><strong>Role:</strong> Business Analyst, specs and release QA</p>
+  <p class="wm-desc"><strong>Problem —</strong> Dispatch relied on a spreadsheet-driven process that broke down whenever volume spiked, causing delayed assignments during peak periods.</p>
+  <p class="wm-desc"><strong>Approach —</strong> Documented the real workflow dispatchers used (not the official one), translated it into specs for an internal console, and ran the QA pass ahead of each quarterly release.</p>
+  <div class="tag-cloud"><span class="tag">Dispatch delays −40%</span><span class="tag">Quarterly release cadence</span></div>
+</template>
+
+<!-- ═══ WORK CASE-STUDY OVERLAY ═══ -->
+<div id="wmodal" role="dialog" aria-modal="true" aria-labelledby="wm-title-live" aria-hidden="true">
+  <div id="wmodal-back"></div>
+  <div id="wmodal-panel">
+    <div class="pm-handle"></div>
+    <div id="wmodal-body"></div>
+    <button class="pm-close" id="wm-close" type="button">Close</button>
+  </div>
+</div>
 
 <!-- ═══ SKILLS ═══ -->
 <section class="section" data-section="04" aria-labelledby="skills-h">
@@ -984,18 +1091,18 @@ footer {
           <div class="edu-left">
             <span class="edu-num">01</span>
             <div class="edu-titles">
-              <p class="edu-degree">Your Degree Title</p>
-              <p class="edu-inst">Your University</p>
+              <p class="edu-degree">MSc, Business Administration</p>
+              <p class="edu-inst">Universidade Nova de Lisboa</p>
             </div>
           </div>
           <div class="edu-right">
-            <span class="edu-year">2012 — 2016</span>
+            <span class="edu-year">2012 — 2014</span>
             <span class="edu-plus" aria-hidden="true"></span>
           </div>
         </button>
         <div class="edu-panel">
           <div class="edu-panel-inner">
-            <p class="edu-note">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <p class="edu-note">Specialized in digital strategy and information systems. Thesis on product-led growth models in early-stage SaaS.</p>
           </div>
         </div>
       </div>
@@ -1005,8 +1112,8 @@ footer {
           <div class="edu-left">
             <span class="edu-num">02</span>
             <div class="edu-titles">
-              <p class="edu-degree">Your Certification Title</p>
-              <p class="edu-inst">Issuing Organization</p>
+              <p class="edu-degree">Certified Scrum Product Owner (CSPO)</p>
+              <p class="edu-inst">Scrum Alliance</p>
             </div>
           </div>
           <div class="edu-right">
@@ -1016,7 +1123,7 @@ footer {
         </button>
         <div class="edu-panel">
           <div class="edu-panel-inner">
-            <p class="edu-note">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p class="edu-note">Certification covering agile product ownership, backlog management, and cross-functional facilitation.</p>
           </div>
         </div>
       </div>
@@ -1026,8 +1133,8 @@ footer {
           <div class="edu-left">
             <span class="edu-num">03</span>
             <div class="edu-titles">
-              <p class="edu-degree">Another Course or Certification</p>
-              <p class="edu-inst">Issuing Organization</p>
+              <p class="edu-degree">Product Management Certificate</p>
+              <p class="edu-inst">Reforge</p>
             </div>
           </div>
           <div class="edu-right">
@@ -1037,7 +1144,7 @@ footer {
         </button>
         <div class="edu-panel">
           <div class="edu-panel-inner">
-            <p class="edu-note">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+            <p class="edu-note">Cohort-based program focused on growth loops, retention strategy, and experimentation design.</p>
           </div>
         </div>
       </div>
@@ -1061,21 +1168,21 @@ footer {
       <div class="testi-track" id="testi-track">
 
         <div class="testi-card">
-          <span class="tc-platform">LinkedIn · Managing Director</span>
-          <p class="tc-quote">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam.</p>
-          <p class="tc-attr">Jane Doe<br/>Managing Director, Company Name</p>
+          <span class="tc-platform">LinkedIn · VP of Product</span>
+          <p class="tc-quote">Maya has the rare ability to turn a messy, half-formed idea into a shipped feature people actually use. Our onboarding numbers still show it.</p>
+          <p class="tc-attr">Sara Lindqvist<br/>VP of Product, Solenne</p>
         </div>
 
         <div class="testi-card">
-          <span class="tc-platform">LinkedIn · Head of Product</span>
-          <p class="tc-quote">Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse.</p>
-          <p class="tc-attr">John Smith<br/>Head of Product, Company Name</p>
+          <span class="tc-platform">LinkedIn · Engineering Lead</span>
+          <p class="tc-quote">Every spec Maya wrote saved us a full sprint of back-and-forth. She thinks like an engineer without needing to be one.</p>
+          <p class="tc-attr">Tomas Herrera<br/>Engineering Lead, Vantree</p>
         </div>
 
         <div class="testi-card">
           <span class="tc-platform">Referral · Mentee</span>
-          <p class="tc-quote">Cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          <p class="tc-attr">Alex Lee<br/>Mentee, Program Name</p>
+          <p class="tc-quote">Maya's mentoring sessions gave me a framework for prioritization I still use two jobs later.</p>
+          <p class="tc-attr">Priya Nair<br/>Associate PM, Marlow &amp; Finch</p>
         </div>
 
       </div>
@@ -1104,38 +1211,38 @@ footer {
         </div>
         <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg></div>
       </a>
-      <a href="mailto:hello@example.com" class="link-row">
+      <a href="mailto:hello@mayakessler.com" class="link-row">
         <div class="lr-left">
           <span class="lr-num">02</span>
-          <div><p class="lr-name">Email</p><p class="lr-desc">hello@example.com</p></div>
+          <div><p class="lr-name">Email</p><p class="lr-desc">hello@mayakessler.com</p></div>
         </div>
         <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
       </a>
-      <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" class="link-row">
+      <a href="https://linkedin.com/in/maya-kessler-pm" target="_blank" rel="noopener noreferrer" class="link-row">
         <div class="lr-left">
           <span class="lr-num">03</span>
           <div><p class="lr-name">LinkedIn</p><p class="lr-desc">Full work history</p></div>
         </div>
         <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
       </a>
-      <a href="https://example.com/mentoring" target="_blank" rel="noopener noreferrer" class="link-row">
+      <a href="mailto:hello@mayakessler.com?subject=Mentoring%20inquiry" class="link-row">
         <div class="lr-left">
           <span class="lr-num">04</span>
-          <div><p class="lr-name">Mentoring</p><p class="lr-desc">Free sessions · Booking link</p></div>
+          <div><p class="lr-name">Mentoring</p><p class="lr-desc">Free sessions · Email to book</p></div>
         </div>
         <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
       </a>
-      <a href="https://medium.com/@yourhandle" target="_blank" rel="noopener noreferrer" class="link-row">
+      <a href="https://medium.com/@mayakesslerpm" target="_blank" rel="noopener noreferrer" class="link-row">
         <div class="lr-left">
           <span class="lr-num">05</span>
           <div><p class="lr-name">Writing</p><p class="lr-desc">Articles · Blog</p></div>
         </div>
         <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
       </a>
-      <a href="https://x.com/yourhandle" target="_blank" rel="noopener noreferrer" class="link-row">
+      <a href="https://x.com/mayakesslerpm" target="_blank" rel="noopener noreferrer" class="link-row">
         <div class="lr-left">
           <span class="lr-num">06</span>
-          <div><p class="lr-name">X / Twitter</p><p class="lr-desc">@yourhandle</p></div>
+          <div><p class="lr-name">X / Twitter</p><p class="lr-desc">@mayakesslerpm</p></div>
         </div>
         <div class="lr-arrow"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
       </a>
@@ -1153,7 +1260,7 @@ footer {
       <span class="clip-wrap"><span class="clip-inner">caught your attention —</span></span>
     </h2>
     <p class="fcta-sub">My LinkedIn has the full picture.</p>
-    <a href="mailto:hello@example.com" class="btn-primary">
+    <a href="mailto:hello@mayakessler.com" class="btn-primary">
       <span class="btn-fill"></span>
       Say hello
       <svg viewBox="0 0 24 24"><path d="M7 17L17 7M7 7h10v10"/></svg>
@@ -1162,17 +1269,17 @@ footer {
 </div>
 
 <div class="legal" role="complementary">
-  Analytics loaded only with consent via the cookie bar. No personal data collected. Testimonials are sample quotes for demonstration purposes. All third-party trademarks belong to their respective owners. For enquiries, reach out <a href="mailto:hello@example.com">via email</a>. Content &copy; 2025 Your Name.
+  Analytics loaded only with consent via the cookie bar. No personal data collected. Testimonials are sample quotes for demonstration purposes. All third-party trademarks belong to their respective owners. For enquiries, reach out <a href="mailto:hello@mayakessler.com">via email</a>. Content &copy; 2025 Maya Kessler.
 </div>
 
 </main>
 
 <footer role="contentinfo">
-  <p class="foot-copy">&copy; 2025 Your Name &middot; Your Location</p>
+  <p class="foot-copy">&copy; 2025 Maya Kessler &middot; Lisbon, Portugal</p>
   <ul class="foot-links" role="list">
-    <li><a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-    <li><a href="https://x.com/yourhandle" target="_blank" rel="noopener noreferrer">X</a></li>
-    <li><a href="https://medium.com/@yourhandle" target="_blank" rel="noopener noreferrer">Medium</a></li>
+    <li><a href="https://linkedin.com/in/maya-kessler-pm" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+    <li><a href="https://x.com/mayakesslerpm" target="_blank" rel="noopener noreferrer">X</a></li>
+    <li><a href="https://medium.com/@mayakesslerpm" target="_blank" rel="noopener noreferrer">Medium</a></li>
   </ul>
 </footer>
 
