@@ -4,6 +4,9 @@ A free portfolio/CV site template. Scroll-driven, motion-first, no framework.
 
 **[live preview →](https://jzmn-crft.github.io/sea-of-stars-template/)**
 
+Click **Use this template** above to get your own copy, no cloning
+required. If this saves you time, a ⭐ helps others find it.
+
 ## What you get
 
 - Single-page portfolio with scroll-driven storytelling: hero, work,
