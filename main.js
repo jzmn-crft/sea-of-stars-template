@@ -4,6 +4,46 @@
 const lerp = (a, b, n) => a + (b - a) * n;
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
+/* Shared dialog behavior: open/close, Escape-to-close, backdrop click,
+   focus trap, and returning focus to whatever triggered it. Used by the
+   privacy modal and the work case-study overlay. */
+function initOverlay({ modalId, backId, closeId }){
+  const modal = document.getElementById(modalId);
+  if (!modal) return null;
+  const back   = document.getElementById(backId);
+  const closeB = document.getElementById(closeId);
+  let lastFocus = null;
+
+  function open(trigger){
+    lastFocus = trigger || document.activeElement;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    closeB?.focus();
+  }
+  function close(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    lastFocus?.focus();
+  }
+
+  closeB?.addEventListener('click', close);
+  back?.addEventListener('click', close);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) close();
+  });
+  modal.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    const f = modal.querySelectorAll('button,[href],[tabindex]:not([tabindex="-1"])');
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey){ if (document.activeElement === first){ e.preventDefault(); last.focus(); } }
+    else { if (document.activeElement === last){ e.preventDefault(); first.focus(); } }
+  });
+
+  return { open, close };
+}
+
 /* ─────────────────────────────────────────
    1. PAGE LOADER
 ───────────────────────────────────────── */
@@ -319,49 +359,20 @@ function initScrollAnimations(){
    6c. WORK CASE-STUDY OVERLAY
 ───────────────────────────────────────── */
 (function(){
-  const modal  = document.getElementById('wmodal');
-  const back   = document.getElementById('wmodal-back');
-  const closeB = document.getElementById('wm-close');
-  const body   = document.getElementById('wmodal-body');
-  if (!modal) return;
-  let lastTrigger = null;
-
-  function open(trigger){
-    const tplId = trigger.getAttribute('data-target');
-    const tpl = document.getElementById(tplId);
-    if (!tpl) return;
-    body.innerHTML = '';
-    body.appendChild(tpl.content.cloneNode(true));
-    const title = body.querySelector('.wm-title');
-    if (title) title.id = 'wm-title-live';
-    lastTrigger = trigger;
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden','false');
-    document.body.style.overflow = 'hidden';
-    closeB.focus();
-  }
-  function close(){
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
-    lastTrigger?.focus();
-  }
+  const wmodal = initOverlay({ modalId: 'wmodal', backId: 'wmodal-back', closeId: 'wm-close' });
+  if (!wmodal) return;
+  const body = document.getElementById('wmodal-body');
 
   document.querySelectorAll('.work-card').forEach(card => {
-    card.addEventListener('click', () => open(card));
-  });
-  closeB?.addEventListener('click', close);
-  back?.addEventListener('click', close);
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) close();
-  });
-
-  modal.addEventListener('keydown', e => {
-    if (e.key !== 'Tab') return;
-    const f = modal.querySelectorAll('button,[href],[tabindex]:not([tabindex="-1"])');
-    const first = f[0], last = f[f.length - 1];
-    if (e.shiftKey){ if (document.activeElement === first){ e.preventDefault(); last.focus(); } }
-    else { if (document.activeElement === last){ e.preventDefault(); first.focus(); } }
+    card.addEventListener('click', () => {
+      const tpl = document.getElementById(card.getAttribute('data-target'));
+      if (!tpl) return;
+      body.innerHTML = '';
+      body.appendChild(tpl.content.cloneNode(true));
+      const title = body.querySelector('.wm-title');
+      if (title) title.id = 'wm-title-live';
+      wmodal.open(card);
+    });
   });
 })();
 
@@ -386,39 +397,10 @@ function initScrollAnimations(){
    8. PRIVACY MODAL
 ───────────────────────────────────────── */
 (function(){
-  const modal   = document.getElementById('pmodal');
-  const back    = document.getElementById('pmodal-back');
-  const closeB  = document.getElementById('pm-close');
-  const openB   = document.getElementById('cbar-more');
-
-  function open(){
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden','false');
-    document.body.style.overflow = 'hidden';
-    closeB.focus();
-  }
-  function close(){
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
-    openB?.focus();
-  }
-
-  openB?.addEventListener('click',  e => { e.preventDefault(); open(); });
-  closeB?.addEventListener('click', close);
-  back?.addEventListener('click',   close);
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) close();
-  });
-
-  /* Focus trap */
-  modal.addEventListener('keydown', e => {
-    if (e.key !== 'Tab') return;
-    const f = modal.querySelectorAll('button,[href],[tabindex]:not([tabindex="-1"])');
-    const first = f[0], last = f[f.length - 1];
-    if (e.shiftKey){ if (document.activeElement === first){ e.preventDefault(); last.focus(); } }
-    else { if (document.activeElement === last){ e.preventDefault(); first.focus(); } }
-  });
+  const pmodal = initOverlay({ modalId: 'pmodal', backId: 'pmodal-back', closeId: 'pm-close' });
+  if (!pmodal) return;
+  const openB = document.getElementById('cbar-more');
+  openB?.addEventListener('click', e => { e.preventDefault(); pmodal.open(openB); });
 })();
 
 /* ─────────────────────────────────────────
