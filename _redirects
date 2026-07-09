@@ -1,12 +1,9 @@
 # Cloudflare Pages — URL redirects
 # Format: source  destination  [status]
 
-# Redirect www → apex (301 permanent)
-https://www.mayakessler.com/*  https://mayakessler.com/:splat  301
-
 # Convenience shortlinks (use in email signatures, bios, etc.)
-/linkedin   https://linkedin.com/in/maya-kessler-pm                        302
-/mentor     mailto:hello@mayakessler.com?subject=Mentoring%20inquiry       302
-/medium     https://medium.com/@mayakesslerpm                             302
-/twitter    https://x.com/mayakesslerpm                                   302
-/x          https://x.com/mayakesslerpm                                   302
+/linkedin   https://github.com/jzmn-crft/sea-of-stars-template            302
+/mentor     mailto:hello@example.com?subject=Mentoring%20inquiry          302
+/medium     https://github.com/jzmn-crft/sea-of-stars-template            302
+/twitter    https://github.com/jzmn-crft/sea-of-stars-template            302
+/x          https://github.com/jzmn-crft/sea-of-stars-template            302
